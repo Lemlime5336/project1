@@ -38,3 +38,16 @@ function printBoard(){
 
 
 //Step 4: Making Moves
+// players cannot take occupied cells - if/else statements allow to easily check 
+// a balnk cell is unoccupied, prompting to try again if not
+function handleMove(position){
+    if (gameBoard[position]=== " ") {
+        gameBoard[position] = currentPlayer;
+    } else {
+        console.log("Cell already taken, choose another one.");
+        return false;
+    }
+}
+
+//Step 5: checking game results
+if
