@@ -39,7 +39,7 @@ function printBoard(){
 
 //Step 4: Making Moves
 // players cannot take occupied cells - if/else statements allow to easily check 
-// a balnk cell is unoccupied, prompting to try again if not
+// a blank cell is unoccupied, prompting to try again if not
 function handleMove(position){
     if (gameBoard[position]=== " ") {
         gameBoard[position] = currentPlayer;
@@ -47,7 +47,45 @@ function handleMove(position){
         console.log("Cell already taken, choose another one.");
         return false;
     }
+
+    //Step 5.1: checking win or loss
+    //an if statement checks if a player has won
+    if (checkWin()){
+        printBoard();
+        console.log(`Player ${currentPlayer} wins!`);
+        gameActive = false;
+        return true;
+    }
+
+    //Step 5.2: checking for draws
+    //if all cells are filled without winning it is a draw
+    //using arrow function syntax
+    if(gameBoard.every((cell) => cell!==" ")){
+        printBoard();
+        console.log("It's a draw!");
+        gameActive = false;
+        return true;
+    }
+
+    //Step 6: Player Turns
+    //after one player's move, the next player needs to play
+    // this can be done by checking whether the currentPlayer ="❌"
+    //and swapping it out using a ternary operator
+    currentPlayer = currentPlayer=== "❌" ? "⭕️" : "❌";
+    return true;
 }
 
-//Step 5: checking game results
-if
+//Step 7: creating the checkWin function 
+// conditions are an array of all possible winnign combinations
+function checkWin(){
+    const conditions = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6],
+    ];
+}
