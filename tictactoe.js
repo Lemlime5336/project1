@@ -1,5 +1,5 @@
 //Step 1: import packages
-//prompt-sync package to handle user inputs
+// prompt-sync package to handle user inputs
 const prompt = require("prompt-sync")();
 
 
@@ -12,8 +12,8 @@ let gameBoard = [" "," "," "," "," "," "," "," "," "];
 // name for the first player to track turns
 let currentPlayer = "❌";
 
-//set game state so program knows when to stop and end.
-//game keeps going until there is a win / draw 
+// set game state so program knows when to stop and end.
+// game keeps going until there is a win / draw 
 let gameActive = true;
 
 
@@ -48,8 +48,9 @@ function handleMove(position){
         return false;
     }
 
+
     //Step 5.1: checking win or loss
-    //an if statement checks if a player has won
+    // an if statement checks if a player has won
     if (checkWin()){
         printBoard();
         console.log(`Player ${currentPlayer} wins!`);
@@ -57,9 +58,10 @@ function handleMove(position){
         return true;
     }
 
+
     //Step 5.2: checking for draws
-    //if all cells are filled without winning it is a draw
-    //using arrow function syntax
+    // if all cells are filled without winning it is a draw
+    // using arrow function syntax
     if(gameBoard.every((cell) => cell!==" ")){
         printBoard();
         console.log("It's a draw!");
@@ -67,25 +69,53 @@ function handleMove(position){
         return true;
     }
 
-    //Step 6: Player Turns
-    //after one player's move, the next player needs to play
+
+    // Step 5.3: Player Turns
+    // after one player's move, the next player needs to play
     // this can be done by checking whether the currentPlayer ="❌"
-    //and swapping it out using a ternary operator
+    // and swapping it out using a ternary operator
     currentPlayer = currentPlayer=== "❌" ? "⭕️" : "❌";
     return true;
 }
 
-//Step 7: creating the checkWin function 
+//Step 6: creating the checkWin function 
 // conditions are an array of all possible winnign combinations
 function checkWin(){
+    // the winning conditions array respresents indexes of the winning lines
     const conditions = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8],
-        [2,4,6],
+        [0,1,2], // top row
+        [3,4,5], // middle row
+        [6,7,8], // bottom row
+        [0,3,6], // left column
+        [1,4,7], // middle column
+        [2,5,8], // right column
+        [0,4,8], // main diagonal
+        [2,4,6], // opposite diagonal
     ];
+    // here a,b,c are temp variable names to represent the indexes of the winning line
+    // they map to whichever the current winning condition array contains
+    // .some() loops through each winning condition and returns true when one matches, and player wins
+    return conditions.some(condition => {
+        const [a, b, c] = condition;
+        return gameBoard[a] === currentPlayer &&
+               gameBoard[b] === currentPlayer &&
+               gameBoard[c] === currentPlayer;
+    });
+}
+
+//Step 7: creating the game loop
+// Game continues till a win or draw occurs
+// prompts the player to enter the position which will be parsed as an integer
+// gameActive tracks whether game is ongoing and if so prints the board
+// input is validated to see if user enters a valid input between 0 and 8
+while (gameActive){
+    printBoard();
+    const position =prompt(`Player ${currentPlayer}, enter your move (0-8): `);
+
+    if (position >= 0 && position <=8) {
+        handleMove(parseInt(position));
+    } else {
+        console.log("Invalid position, enter a number between 0 and 8.");
+    }
+    
 }
